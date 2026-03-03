@@ -81,41 +81,49 @@
 </style>
 
 <script>
-  const YES = true
-  const NO = false
-
-   focused = object => {
+  focused = object => {
     $('input')
       .removeClass('input-active')
       .addClass('input-default');
     $(object)
       .removeClass('input-default')
       .addClass('input-active');
-   }// focused
+  }// focused
 
-    unfocused = object => {
-      $(object)
-      .removeClass('input-default')
-      .addClass('input-active');
-    }// unfocused
+  unfocused = object => {
+    $(object)
+    .removeClass('input-default')
+    .addClass('input-active');
+  }// unfocused
 
-    changed = () => {
-      const LoanAmount = parseFloat($('#LoanAmount').val()) || 0;
-      const LoanPeriod = parseFloat($('#LoanPeriod').val()) || 0;
-      const LoanInterestRate = parseFloat($('#LoanInterestRate').val()) || 0;
+  fixComma = target => {
+    let value = $(target).val().replace(/[^0-9]/g, ''); // 숫자 외 제거
+    if (value) {
+      $(target).val(Number(value).toLocaleString())// 천 단위 콤마 추가
+    } else {
+      $(target).val('')
+    }
+    return value
+  }// fixComma
 
-      const IncomeAmount = parseFloat($('#IncomeAmount').val()) || 0;
-      const DebtAmount = parseFloat($('#DebtAmount').val()) || 0;
-      const DebtEstimationInterestRate = parseFloat($('#DebtEstimationInterestRate').val()) || 6.2;
-      
-      const Loan = LoanAmount * LoanInterestRate
-      const Debt = DebtAmount * DebtEstimationInterestRate
-      const Amount = Loan + Debt
-      const ToIncome = Amount / IncomeAmount
-      const DTI = ToIncome.toFixed(2)
+  changed = () => {
+    const LoanAmount = fixComma($('#LoanAmount'))
+    const LoanPeriod = parseFloat($('#LoanPeriod').val()) || 0;
+    const LoanInterestRate = parseFloat($('#LoanInterestRate').val()) || 0;
 
-      $('#DebtToIncome').val(DTI)
-    }// changed
+    const IncomeAmount = fixComma($('#IncomeAmount'))
+    const DebtAmount = fixComma($('#DebtAmount'))
+
+    const DebtEstimationInterestRate = parseFloat($('#DebtEstimationInterestRate').val()) || 6.2;
+    
+    const Loan = LoanAmount * LoanInterestRate
+    const Debt = DebtAmount * DebtEstimationInterestRate
+    const Amount = Loan + Debt
+    const ToIncome = Amount / IncomeAmount
+    const DTI = ToIncome.toFixed(2)
+
+    $('#DebtToIncome').val(DTI)
+  }// changed
 </script>
 
 </head>
@@ -131,7 +139,7 @@
     <div>
       <label>금액</label>
       <input id="LoanAmount" class="input-default"
-        type="number" min="0" placeholder="대출금액"
+        type="text" min="0" placeholder="대출금액"
         onfocus="focused(this)" onblur="unfocused(this)"
         oninput="changed()">
     </div>
@@ -158,7 +166,7 @@
     <div>
       <label>소득</label>
       <input id="IncomeAmount" class="input-default"
-        type="number" min="0" placeholder="소득금액"
+        type="text" min="0" placeholder="소득금액"
         onfocus="focused(this)" onblur="unfocused(this)"
         oninput="changed()">
     </div>
@@ -166,7 +174,7 @@
     <div>
       <label>부채</label>
       <input id="DebtAmount" class="input-default"
-        type="number" min="0" placeholder="부채금액"
+        type="text" min="0" placeholder="부채금액"
         onfocus="focused(this)" onblur="unfocused(this)"
         oninput="changed()">
     </div>
