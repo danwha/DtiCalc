@@ -136,10 +136,10 @@
     const DTI = ToIncome.toFixed(2)
 
     
-    $('#DescLoanAmount').text(formatKoreanUnit(LoanAmount))
+    $('#DescLoanAmount').text(formatKoreanUnit(LoanAmount + ' 원'))
     $('#DescLoanInterestRate').text(LoanInterestRate + ' %')
-    $('#DescIncomeAmount').text(formatKoreanUnit(IncomeAmount))
-    $('#DescDebtAmount').text(formatKoreanUnit(DebtAmount))
+    $('#DescIncomeAmount').text(formatKoreanUnit(IncomeAmount + ' 원'))
+    $('#DescDebtAmount').text(formatKoreanUnit(DebtAmount + ' 원'))
     $('#DescDebtEstimationInterestRate').text(DebtEstimationInterestRate + ' %')
 
     $('#DebtToIncome').val(DTI)
